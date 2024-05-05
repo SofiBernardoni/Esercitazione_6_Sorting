@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <cassert>
 
 using namespace std;
 
@@ -38,7 +39,7 @@ void Merge(vector<T>& v,
 }
 
 template<typename T>
-void MergeSort(vector<T>& v,
+void MergeSort(std::vector<T>& v,
                const unsigned int& sx,
                const unsigned int& dx){
 
@@ -54,7 +55,7 @@ void MergeSort(vector<T>& v,
 }
 
 template<typename T>
-void MergeSort(vector<T>& v){
+void MergeSort(std::vector<T>& v){
     MergeSort(v, 0, v.size()-1);
 }
 

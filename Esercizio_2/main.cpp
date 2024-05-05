@@ -11,52 +11,86 @@ using namespace std;
 
 int main(int argc, char ** argv)
 {
-    if (argc != 2)
-    {
-        cerr << "Numeri argomenti passati: " << argv[0] << " <vector_size>" << endl;
-        return 1;
-    }
 
-    int size = 0;
-    stringstream(argv[1]) >> size;
+    unsigned int size=0;
+    stringstream(argv[1]) >>size;
     vector<int> randomVector;
-    cout << size;
+    vector<int> numbers;
+    vector<int> Copia;
+    double t=0;
+    double sommas=0;
+    int media=0;
 
-    randomVector.reserve(size);
-
-    for(unsigned int i=0; i<size; i++)
-    {
-        randomVector[i]=rand()%1000;
-        cout  <<  randomVector[i] << endl;
+    for (int i = 1; i < argc; ++i) {
+        int number = stoi(argv[i]);
+        numbers.push_back(number);
     }
 
-    vector<int> Copia=randomVector;
-    SortLibrary::BubbleSort(randomVector);
-/*
-    chrono::steady_clock::time_point t_begin =chrono::steady_clock::now();
+    for ( int i=0; i<numbers.size(); i++){
 
-    SortLibrary::BubbleSort(randomVector);
+        size=numbers[i];
+        randomVector.resize(size);
 
-    chrono::steady_clock::time_point t_end =chrono::steady_clock::now();
+        unsigned int n=5;
+
+        for(unsigned int j=0; j<n; j++)
+        {
+            randomVector.resize(size);
+// assegnazione valori vettore
+            for(unsigned int i=0; i<size; i++)
+            {
+                randomVector[i]=rand()%100;
+                //cout  <<  randomVector[i] <<" ";
+            }
+            Copia=randomVector;
+// time bubble
+            auto startTime = chrono::steady_clock::now();
+            SortLibrary::BubbleSort(randomVector);
+            auto endTime = chrono::steady_clock::now();
+            chrono::duration<double> bubbleSortTime = endTime - startTime;
+            t+= bubbleSortTime.count();
+ // time merge
+            startTime = chrono::steady_clock::now();
+            SortLibrary::MergeSort(Copia);
+            endTime = chrono::steady_clock::now();
+            chrono::duration<double> mergeSortTime = endTime - startTime;
+            sommas+=mergeSortTime.count();
+
+            // stampa vettore ordinato
+            cout <<"il vettore ordinato con Bubblesort : [" ;
+            for(unsigned int i=0; i<size-1; i++)
+            {
+                cout << randomVector[i] << "; " ;
+            }
+            cout <<randomVector[size-1] <<  "] ";
+            cout << "il vettore ordinato con MergeSort: [";
+            for(unsigned int i=0; i<size-1; i++)
+            {
+                cout << Copia[i] << "; ";
+            }
+            cout << Copia[size-1] << "]" << endl;
+
+        }
+        t=t/n;
+        sommas=sommas/n;
+
+        cout << "media algoritmo Bubblesort: " << t << " seconds" << endl;
+
+        cout<< "media algoritmo MergeSort: " << sommas << " seconds" << endl;
+        cout << endl;
+        if (t<=sommas)
+        {
+            media+=1;
+        }
+
+    }
+
+    if (media < numbers.size()/2)
+        cout << " in media l'algoritmo MergeSort è più veloce"<< endl;
+    else
+        cout <<  "in media l'algoritmo BubbleSort è più veloce"<< endl;
 
 
-    double timeElapsed = chrono::duration_cast<chrono::nanoseconds> (t_end-t_begin).count(); //con count trasformo un oggetto duration in double
-    cout << timeElapsed << endl;*/
-
-
-
-    // Test e confronto delle prestazioni di BubbleSort e MergeSort
-    auto startTime = std::chrono::high_resolution_clock::now();
-    SortLibrary::BubbleSort(randomVector);
-    auto endTime = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> bubbleSortTime = endTime - startTime;
-    std::cout << "BubbleSort time: " << bubbleSortTime.count() << " seconds" << std::endl;
-
-    startTime = std::chrono::high_resolution_clock::now();
-    SortLibrary::MergeSort(randomVector, 0, randomVector.size() - 1);
-    endTime = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> mergeSortTime = endTime - startTime;
-    std::cout << "MergeSort time: " << mergeSortTime.count() << " seconds" << std::endl;
     return 0;
 }
 
